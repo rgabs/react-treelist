@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>React Treelist by maheshsenni</title>
+    <title>React Treelist</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -14,8 +14,8 @@
       <h1 class="project-name">React Treelist</h1>
       <h2 class="project-tagline">A React treelist component to display data in tree structure.</h2>
       <a href="https://github.com/maheshsenni/react-treelist" class="btn">View on GitHub</a>
-      <a href="https://github.com/maheshsenni/react-treelist/zipball/master" class="btn">Download .zip</a>
-      <a href="https://github.com/maheshsenni/react-treelist/tarball/master" class="btn">Download .tar.gz</a>
+      <a href="#options" class="btn">Configuration</a>
+      <a href="#demo" class="btn">Demo</a>
     </section>
 
     <section class="main-content">
@@ -36,42 +36,42 @@
   id<span class="pl-k">=</span>{<span class="pl-s"><span class="pl-pds">'</span>id<span class="pl-pds">'</span></span>}
   parentId<span class="pl-k">=</span>{<span class="pl-s"><span class="pl-pds">'</span>parentId<span class="pl-pds">'</span></span>}<span class="pl-k">&gt;&lt;</span><span class="pl-k">/</span>TreeList<span class="pl-k">&gt;</span></pre></div>
 
-<table>
-<thead>
-<tr>
-<th>Property</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>data</code></td>
-<td>array</td>
-<td>Array of data objects which become rows in the treelist</td>
-</tr>
-<tr>
-<td><code>columns</code></td>
-<td>array</td>
-<td>Array of column configuration options. See <a href="#column-options">column options</a> for more details.</td>
-</tr>
-<tr>
-<td><code>options</code></td>
-<td>object</td>
-<td>Component level configuration options. See <a href="#component-options">component options</a> for more details.</td>
-</tr>
-<tr>
-<td><code>id</code></td>
-<td>string</td>
-<td>Data field which uniquely identifies each record</td>
-</tr>
-<tr>
-<td><code>parentId</code></td>
-<td>string</td>
-<td>Data field which identifies the parent row of a record. Data objects with <code>null</code> value in this field are treated as top-level parent records</td>
-</tr>
-</tbody>
-</table>
+  <table>
+    <thead>
+      <tr>
+        <th>Property</th>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>data</code></td>
+        <td>array</td>
+        <td>Array of data objects which become rows in the treelist</td>
+      </tr>
+      <tr>
+        <td><code>columns</code></td>
+        <td>array</td>
+        <td>Array of column configuration options. See <a href="#column-options">column options</a> for more details.</td>
+      </tr>
+      <tr>
+        <td><code>options</code></td>
+        <td>object</td>
+        <td>Component level configuration options. See <a href="#component-options">component options</a> for more details.</td>
+      </tr>
+      <tr>
+        <td><code>id</code></td>
+        <td>string</td>
+        <td>Data field which uniquely identifies each record</td>
+      </tr>
+      <tr>
+        <td><code>parentId</code></td>
+        <td>string</td>
+        <td>Data field which identifies the parent row of a record. Data objects with <code>null</code> value in this field are treated as top-level parent records</td>
+      </tr>
+    </tbody>
+  </table>
 
 <p>See <code>src/js/index.js</code> for an example.</p>
 
@@ -84,59 +84,59 @@
 <p>The component accepts an array of column objects via the property <code>columns</code>. The column objects can accept the following properties.</p>
 
 <table>
-<thead>
-<tr>
-<th>Property name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>title</code></td>
-<td>string</td>
-<td>yes</td>
-<td>Will be displayed as column header</td>
-</tr>
-<tr>
-<td><code>field</code></td>
-<td>string</td>
-<td>yes</td>
-<td>Property in the data object whose value will be displayed in the rows against this column</td>
-</tr>
-<tr>
-<td><code>type</code></td>
-<td>string</td>
-<td>yes</td>
-<td>Data type of the values displayed in the column. Required for sorting and applying formatting. Valid values: <code>number</code>, <code>string</code>, <code>date</code>
-</td>
-</tr>
-<tr>
-<td><code>width</code></td>
-<td>number</td>
-<td>no</td>
-<td>Width of the column</td>
-</tr>
-<tr>
-<td><code>expand</code></td>
-<td>bool</td>
-<td>no</td>
-<td>Shows the expand or collapse in this column if set to <code>true</code>. If this option is not provided, the icons are shown in the first column by default.</td>
-</tr>
-<tr>
-<td><code>class</code></td>
-<td>string</td>
-<td>no</td>
-<td>Class name to be added to the cells in the column. Can be used for applying specific styles for the column values</td>
-</tr>
-<tr>
-<td><code>formatter</code></td>
-<td>function</td>
-<td>no</td>
-<td>If provided, the return value of this function will be dispayed in the rows for this column. The value of <code>field</code> from the data object will be passed as an argument.</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Property name</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>title</code></td>
+      <td>string</td>
+      <td>yes</td>
+      <td>Will be displayed as column header</td>
+    </tr>
+    <tr>
+      <td><code>field</code></td>
+      <td>string</td>
+      <td>yes</td>
+      <td>Property in the data object whose value will be displayed in the rows against this column</td>
+    </tr>
+    <tr>
+      <td><code>type</code></td>
+      <td>string</td>
+      <td>yes</td>
+      <td>Data type of the values displayed in the column. Required for sorting and applying formatting. Valid values: <code>number</code>, <code>string</code>, <code>date</code>
+      </td>
+    </tr>
+    <tr>
+      <td><code>width</code></td>
+      <td>number</td>
+      <td>no</td>
+      <td>Width of the column</td>
+    </tr>
+    <tr>
+      <td><code>expand</code></td>
+      <td>bool</td>
+      <td>no</td>
+      <td>Shows the expand or collapse in this column if set to <code>true</code>. If this option is not provided, the icons are shown in the first column by default.</td>
+    </tr>
+    <tr>
+      <td><code>class</code></td>
+      <td>string</td>
+      <td>no</td>
+      <td>Class name to be added to the cells in the column. Can be used for applying specific styles for the column values</td>
+    </tr>
+    <tr>
+      <td><code>formatter</code></td>
+      <td>function</td>
+      <td>no</td>
+      <td>If provided, the return value of this function will be dispayed in the rows for this column. The value of <code>field</code> from the data object will be passed as an argument.</td>
+    </tr>
+  </tbody>
 </table>
 
 <h3>
@@ -145,49 +145,52 @@
 <p>Component level options are accepted via the property, <code>options</code>.</p>
 
 <table>
-<thead>
-<tr>
-<th>Property name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>expandAll</code></td>
-<td>bool</td>
-<td>no</td>
-<td>If set to <code>true</code> will expand all rows by default when the component is rendered for the first time. Defaults to <code>false</code>.</td>
-</tr>
-<tr>
-<td><code>height</code></td>
-<td>number</td>
-<td>no</td>
-<td>Height of the treelist body. When not provided, the component will expand to show all available rows.</td>
-</tr>
-<tr>
-<td><code>minimumColWidth</code></td>
-<td>number</td>
-<td>no</td>
-<td>Minimum width of columns. Columns can't be resized below this value.</td>
-</tr>
-</tbody>
+  <thead>
+    <tr>
+      <th>Property name</th>
+      <th>Type</th>
+      <th>Required</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>expandAll</code></td>
+      <td>bool</td>
+      <td>no</td>
+      <td>If set to <code>true</code> will expand all rows by default when the component is rendered for the first time. Defaults to <code>false</code>.</td>
+    </tr>
+    <tr>
+      <td><code>height</code></td>
+      <td>number</td>
+      <td>no</td>
+      <td>Height of the treelist body. When not provided, the component will expand to show all available rows.</td>
+    </tr>
+    <tr>
+      <td><code>minimumColWidth</code></td>
+      <td>number</td>
+      <td>no</td>
+      <td>Minimum width of columns. Columns can't be resized below this value.</td>
+    </tr>
+  </tbody>
 </table>
-
+<!-- Demo -->
 <h2>
-<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contributing</h2>
+  <a id="demo" class="anchor" href="#demo" aria-hidden="true">
+  <span aria-hidden="true" class="octicon octicon-link"></span></a>Demo
+</h2>
+<ul>
+  <li>
+    <a href="/demo/basic.html" aria-hidden="true">Basic</a>
+  </li>
+  <li>
+    <a href="/demo/fixed-height.html" aria-hidden="true">Fixed height</a>
+  </li>
+  <li>
+    <a href="/demo/custom-styles.html" aria-hidden="true">Custom styles for columns</a>
+  </li>
+</ul>
 
-<ol>
-<li>Fork it!</li>
-<li>Create your feature branch: <code>git checkout -b my-new-feature</code>
-</li>
-<li>Commit your changes: <code>git commit -am 'Add some feature'</code>
-</li>
-<li>Push to the branch: <code>git push origin my-new-feature</code>
-</li>
-<li>Submit a pull request</li>
-</ol>
 
 <h2>
 <a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
