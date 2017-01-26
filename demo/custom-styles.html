@@ -79,7 +79,8 @@
     }, {
       title: 'Name',
       field: 'name',
-      type: 'string'
+      type: 'string',
+      expand: true
     }, {
       title: 'Position',
       field: 'position',
@@ -96,6 +97,7 @@
 <body>
   <section class="container">
     <p>Columns can be provided a custom class name using the <em>class</em> option. In this example, the position column is rendered with the class name, <em>red</em></p>
+    <p><em>expand</em> options is used to move the expand and collapse icon from the default first column to <em>Name</em> column.</p>
     <div id="tree"></div>
     <section class="columns">
       <h3>Columns</h3>
