@@ -82,4 +82,4 @@
     // representation instead of an object
     splice: c.splice,
   }
-}(document, [], 'prototype', module.exports || window);
+}(document, [], 'prototype', (typeof module !== 'undefined' && module.exports) || window);
