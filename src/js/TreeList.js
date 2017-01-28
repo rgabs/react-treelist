@@ -16,7 +16,7 @@ class TreeList extends Component {
     this.resizeColumn = this.resizeColumn.bind(this);
     this.onBodyHScroll = this.onBodyHScroll.bind(this);
 
-    const { columns } = this.props;
+    const {columns} = this.props;
 
     this.state = {
       sortedColumns: {},
@@ -70,7 +70,10 @@ class TreeList extends Component {
   }
 
   resizeColumn(column, width, totalWidth) {
-    const newColumn = {...column, width};
+    const newColumn = {
+      ...column,
+      width
+    };
     this.state.columns.forEach((c) => {
       if (c.field === column.field) {
         column.width = width;
@@ -84,21 +87,26 @@ class TreeList extends Component {
 
   onBodyHScroll(scrollLeft) {
     if (scrollLeft !== this.state.scrollLeft) {
-      this.setState({scrollLeft});
+      this.setState({
+        scrollLeft
+      });
     }
   }
 
   render() {
-    let { id, parentId } = this.props;
-    const { data, options } = this.props;
-    const { columns } = this.state;
+    let {id, parentId, columnParentField} = this.props;
+    const {data, options} = this.props;
+    const {columns} = this.state;
 
     // assign defaults
     if (!id) {
       id = 'id';
     }
-    if(!parentId) {
+    if (!parentId) {
       parentId = 'parentId';
+    }
+    if (!columnParentField) {
+      columnParentField = 'columnParentField';
     }
 
     // use intial data from props by default
@@ -107,7 +115,7 @@ class TreeList extends Component {
     // if (Object.keys(this.state.filters).length > 0) {
     //   renderData = getFilteredData(data, this.state.filters, id, parentId);
     // }
-    
+
     // check if sort is applied in any of the columns
     const sortKeys = Object.keys(this.state.sortedColumns);
     if (sortKeys.length > 0) {
@@ -125,30 +133,32 @@ class TreeList extends Component {
     return (
       <div className='tgrid'>
         <Header
-          columns={columns}
-          onSort={this.handleSort}
-          onFilter={this.handleFilter}
-          sortedColumns={this.state.sortedColumns}
-          filters={this.state.filters}
-          onResize={this.resizeColumn}
-          width={this.state.totalWidth}
-          scrollLeft={this.state.scrollLeft}
-          minimumColWidth={options.minimumColWidth}>
+      columns={columns}
+      onSort={this.handleSort}
+      disableSort={options.disableSort}
+      onFilter={this.handleFilter}
+      sortedColumns={this.state.sortedColumns}
+      filters={this.state.filters}
+      onResize={this.resizeColumn}
+      width={this.state.totalWidth}
+      scrollLeft={this.state.scrollLeft}
+      minimumColWidth={options.minimumColWidth}
+      parentIdField={columnParentField}>
         </Header>
         <Body
-          columns={columns}
-          data={renderData}
-          metadata={metadata}
-          idField={id}
-          width={this.state.totalWidth}
-          height={options.height}
-          parentIdField={parentId}
-          onHScroll={this.onBodyHScroll}
-          updateHash={updateHash}
-          expandAll={options.expandAll}>
+      columns={columns}
+      data={renderData}
+      metadata={metadata}
+      idField={id}
+      width={this.state.totalWidth}
+      height={options.height}
+      parentIdField={parentId}
+      onHScroll={this.onBodyHScroll}
+      updateHash={updateHash}
+      expandAll={options.expandAll}>
         </Body>
       </div>
-    );
+      );
   }
 }
 
@@ -157,7 +167,8 @@ TreeList.propTypes = {
   columns: PropTypes.array.isRequired,
   options: PropTypes.object,
   id: PropTypes.string,
-  parentId: PropTypes.string
+  parentId: PropTypes.string,
+  columnParentField: PropTypes.string
 };
 
 TreeList.defaultProps = {

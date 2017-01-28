@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from 'react';
 import Colgroup from './Colgroup';
 import { Row, createRow } from './Row';
 import { getRootParents, getChildren } from './util/TreeUtils';
+import { $ } from './util/ki';
 
 const _isExpanded = function(rowId, expandedRows) {
   return expandedRows.indexOf(rowId) > -1;
@@ -64,6 +65,13 @@ class Body extends Component {
 
   handleExpandToggle(row) {
     const rowId = row[this.props.idField];
+    setTimeout(() => {
+      $('.tgrid-header-table th').each((el, index) => {
+        if (el.style.display === 'none') {
+          $(`.tgrid-body-wrapper td:nth-of-type(${index + 1})`).hide();
+        }
+      })
+    })
     if (this.state.expandedRows.indexOf(rowId) > -1) {
       // expanded and has to be collapsed
       // remove collapsed row and all it's children
@@ -84,10 +92,11 @@ class Body extends Component {
         expandedRows: [...this.state.expandedRows, rowId]
       });
     }
+
   }
 
   onScroll(event) {
-    const { scrollLeft, scrollTop } = event.target;
+    const {scrollLeft, scrollTop} = event.target;
     this._scrollLeft = scrollLeft;
     this._scrollTop = scrollTop;
     this.requestScrollUpdate();
@@ -102,22 +111,26 @@ class Body extends Component {
 
   scrollUpdate() {
     this._scrolling = false;
-    const { _scrollLeft, _scrollTop } = this;
+    const {_scrollLeft, _scrollTop} = this;
     if (this.state.scrollLeft !== _scrollLeft) {
       this.props.onHScroll(_scrollLeft);
-      this.setState({ scrollLeft: _scrollLeft });
+      this.setState({
+        scrollLeft: _scrollLeft
+      });
     }
     if (this.state.scrollTop !== _scrollTop) {
-      this.setState({ scrollTop: _scrollTop });
+      this.setState({
+        scrollTop: _scrollTop
+      });
     }
   }
 
   getVisibleRowsRange(totalRows) {
-    const { scrollTop, scrollLeft } = this.state;
-    const { itemHeight, height } = this.props;
+    const {scrollTop, scrollLeft} = this.state;
+    const {itemHeight, height} = this.props;
 
-    const rowsInView = Math.floor(height/itemHeight);
-    let startIndex = Math.floor(scrollTop/itemHeight);
+    const rowsInView = Math.floor(height / itemHeight);
+    let startIndex = Math.floor(scrollTop / itemHeight);
 
     startIndex = Math.max(0, startIndex - rowsInView);
     let endIndex = startIndex + (rowsInView * 3);
@@ -143,23 +156,25 @@ class Body extends Component {
   }
 
   render() {
-    const { columns, data, metadata, idField,
-      parentIdField, width, height, expandAll } = this.props;
+    const {columns, data, metadata, idField, parentIdField, width, height, expandAll} = this.props;
 
     const rows = this.makeRows(data, metadata, columns,
       idField, parentIdField, expandAll);
 
-    const [startIndex, endIndex,
-      topFillerHeight, bottomFillerHeight] = this.getVisibleRowsRange(rows.length);
+    const [startIndex, endIndex, topFillerHeight, bottomFillerHeight] = this.getVisibleRowsRange(rows.length);
     const visibleRows = rows.slice(startIndex, endIndex);
 
     let tableBody;
     if (typeof height === 'number') {
       tableBody = (
         <tbody>
-          <tr style={{ height: topFillerHeight }}></tr>
+          <tr style={{
+          height: topFillerHeight
+        }}></tr>
           {visibleRows}
-          <tr style={{ height: bottomFillerHeight }}></tr>
+          <tr style={{
+          height: bottomFillerHeight
+        }}></tr>
         </tbody>
       );
     } else {
@@ -168,13 +183,17 @@ class Body extends Component {
 
     return (
       <div className='tgrid-body-wrapper'
-        onScroll={this.onScroll} style={{ height: height }}>
-        <table className='tgrid-body-table' style={{ width: width}}>
+      onScroll={this.onScroll} style={{
+        height: height
+      }}>
+        <table className='tgrid-body-table' style={{
+        width: width
+      }}>
           <Colgroup columns={columns}></Colgroup>
           {tableBody}
         </table>
       </div>
-    );
+      );
   }
 }
 

@@ -7,9 +7,9 @@ import ResizeGhost from './ResizeGhost';
 import ResizeHint from './ResizeHint';
 import ColumnOptions from './ColumnOptions';
 import getScrollbarWidth from './util/ScrollbarWidth';
+import { $ } from './util/ki'
 
 const COLUMN_MINIMUM_WIDTH = 75;
-
 class Header extends Component {
   constructor(props) {
     super(props);
@@ -37,6 +37,7 @@ class Header extends Component {
     this.onColumnOptionsClick = this.onColumnOptionsClick.bind(this);
     this.hideColumnOptions = this.hideColumnOptions.bind(this);
     this.cacheColumnWidth = this.cacheColumnWidth.bind(this);
+    this.toggleColumns = this.toggleColumns.bind(this);
   }
 
   onColumnOptionsClick(iconXPos, column) {
@@ -58,7 +59,7 @@ class Header extends Component {
   }
 
   showColumnOptions(left, column) {
-    const { sortedColumns, filters } = this.props;
+    const {sortedColumns, filters} = this.props;
     this.setState({
       showColumnOptions: true,
       columnOptionsLeft: left,
@@ -157,23 +158,41 @@ class Header extends Component {
   componentWillMount() {
     let scrollbarWidth = getScrollbarWidth();
     if (scrollbarWidth > 0) {
-      this.setState({scrollbarWidth});
+      this.setState({
+        scrollbarWidth
+      });
+    }
+  }
+  toggleColumns(currentCol) {
+    const {columns, parentIdField} = this.props;
+    const currentColField = currentCol.field;
+    const nestedColumns = columns.filter(col => (col[parentIdField] === currentColField))
+    return () => {
+      nestedColumns.forEach(nestedCol => {
+        const nestedColIndex = columns.indexOf(nestedCol);
+        $(`.tgrid-body-wrapper td:nth-of-type(${nestedColIndex + 1})`).toggle();
+        $(`.tgrid-header-table th:nth-of-type(${nestedColIndex + 1})`).toggle();
+      })
     }
   }
 
-  _makeTableHeaders(columns) {
+  _makeTableHeaders(columns, parentIdField) {
+    const {disableSort, sortedColumns, onSort} = this.props;
     const headerCells = columns.map((col, index) => {
       return (
         <HeaderCell
-          key={'colh-' + index}
-          column={col}
-          sort={this.props.sortedColumns[col.field]}
-          onSort={this.props.onSort}
-          onResizeEnter={this.showResizeGhost}
-          onColumnOptionsClick={this.onColumnOptionsClick}
-          whenWidthAvailable={this.cacheColumnWidth}>
+        key={'colh-' + index}
+        column={col}
+        sort={sortedColumns[col.field]}
+        onSort={onSort}
+        onResizeEnter={this.showResizeGhost}
+        onColumnOptionsClick={this.onColumnOptionsClick}
+        whenWidthAvailable={this.cacheColumnWidth}
+        parentId={col[parentIdField]}
+        toggleColumns={this.toggleColumns(col)}
+        disableSort ={disableSort}>
         </HeaderCell>
-      );
+        );
     });
     return headerCells;
   }
@@ -183,21 +202,21 @@ class Header extends Component {
   }
 
   render() {
-    const { columns, sortedColumns, filters, width } = this.props;
-    const headerCells = this._makeTableHeaders(columns);
+    const {columns, sortedColumns, filters, width, parentIdField} = this.props;
+    const headerCells = this._makeTableHeaders(columns, parentIdField);
 
     let resizeGhost = null;
     if (this.state.showResizeGhost) {
       resizeGhost = (
         <ResizeGhost
-          height={this.state.resizeGhostPos.height}
-          width={this.state.resizeGhostPos.width}
-          top={this.state.resizeGhostPos.top}
-          left={this.state.resizeGhostPos.left}
-          onLeave={this.removeResizeGhost}
-          onDragStart={this.onResizeStart}
-          onDrag={this.onResize}
-          onDragEnd={this.onResizeEnd}>
+        height={this.state.resizeGhostPos.height}
+        width={this.state.resizeGhostPos.width}
+        top={this.state.resizeGhostPos.top}
+        left={this.state.resizeGhostPos.left}
+        onLeave={this.removeResizeGhost}
+        onDragStart={this.onResizeStart}
+        onDrag={this.onResize}
+        onDragEnd={this.onResizeEnd}>
         </ResizeGhost>
       );
     }
@@ -213,25 +232,29 @@ class Header extends Component {
     if (this.state.showColumnOptions) {
       columnOptions = (
         <ColumnOptions
-          left={this.state.columnOptionsLeft}
-          field={this.state.columnOptions.field}
-          dataType={this.state.columnOptions.type}
-          sort={sortedColumns[this.state.columnOptions.field]}
-          filter={filters[this.state.columnOptions.field]}
-          onSort={this.props.onSort}
-          onFilter={this.props.onFilter}
-          hide={this.hideColumnOptions}>
+        left={this.state.columnOptionsLeft}
+        field={this.state.columnOptions.field}
+        dataType={this.state.columnOptions.type}
+        sort={sortedColumns[this.state.columnOptions.field]}
+        filter={filters[this.state.columnOptions.field]}
+        onSort={this.props.onSort}
+        onFilter={this.props.onFilter}
+        hide={this.hideColumnOptions}>
         </ColumnOptions>
       );
     }
 
     return (
-      <div className='tgrid-header' style={{ paddingRight: this.state.scrollbarWidth}}>
+      <div className='tgrid-header' style={{
+        paddingRight: this.state.scrollbarWidth
+      }}>
         <div className='tgrid-header-wrapper' ref='header'>
           {resizeGhost}
           {resizeHint}
           {columnOptions}
-          <table className='tgrid-header-table' style={{ width: width}}>
+          <table className='tgrid-header-table' style={{
+        width: width
+      }}>
             <Colgroup columns={columns}></Colgroup>
             <thead>
               <tr>
@@ -241,7 +264,7 @@ class Header extends Component {
           </table>
         </div>
       </div>
-    );
+      );
   }
 }
 
@@ -252,9 +275,11 @@ Header.propTypes = {
   onFilter: PropTypes.func.isRequired,
   sortedColumns: PropTypes.object.isRequired,
   filters: PropTypes.object.isRequired,
+  disableSort: PropTypes.bool,
   onResize: PropTypes.func.isRequired,
   width: PropTypes.number,
-  scrollLeft: PropTypes.number.isRequired
+  scrollLeft: PropTypes.number.isRequired,
+  parentIdField: PropTypes.string.isRequired
 };
 
 Header.defaultProps = {

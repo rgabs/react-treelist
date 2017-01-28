@@ -33,8 +33,12 @@ class HeaderCell extends Component {
     this.props.whenWidthAvailable(this.props.column.field, rect.width);
   }
 
+  getExpandCollapseButton() {
+    return <span onClick={this.props.toggleColumns}>+/-</span>
+  }
+
   render() {
-    const { sort } = this.props;
+    const {sort, disableSort} = this.props;
     let sortIndicator = null;
 
     if (sort === 'asc') {
@@ -42,25 +46,28 @@ class HeaderCell extends Component {
     } else if (sort === 'desc') {
       sortIndicator = <span className='i-sort i-sort-desc'></span>;
     }
-
+    const expandCollapse = this.props.column.isNested ? this.getExpandCollapseButton() : null
     return (
       <th
-        ref='header'
-        className='tgrid-column-header'
-        onClick={this.handleClick}>
+      ref='header'
+      className='tgrid-column-header'
+      onClick={this.props.disableSort ? null : this.handleClick}>
         <span className='tgrid-column-header-text-wrapper'>
           <span className='tgrid-column-header-text'>
             {this.props.column.title}
           </span>
           {sortIndicator}
+          {expandCollapse}
         </span>
         <div className='resize-indicator'
-          ref='resizeIndicator'
-          style={{width: RESIZE_INDICATOR_WIDTH}}
-          onMouseEnter={this.onResizeMouseEnter}>
+      ref='resizeIndicator'
+      style={{
+        width: RESIZE_INDICATOR_WIDTH
+      }}
+      onMouseEnter={this.onResizeMouseEnter}>
         </div>
       </th>
-    );
+      );
   }
 }
 
@@ -70,7 +77,9 @@ HeaderCell.propTypes = {
   sort: PropTypes.string,
   onResizeEnter: PropTypes.func.isRequired,
   onColumnOptionsClick: PropTypes.func.isRequired,
-  whenWidthAvailable:  PropTypes.func.isRequired
+  whenWidthAvailable: PropTypes.func.isRequired,
+  toggleColumns: PropTypes.func,
+  disableSort: PropTypes.bool
 };
 
 export default HeaderCell;
